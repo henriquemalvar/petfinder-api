@@ -23,12 +23,25 @@ model User {
   posts     Post[]
 }
 
+enum PetGender {
+  MALE
+  FEMALE
+}
+
+enum PetSize {
+  SMALL
+  MEDIUM
+  LARGE
+}
+
 model Pet {
   id          String   @id @default(uuid())
   name        String
   type        String
   breed       String
   age         String
+  gender      PetGender
+  size        PetSize
   image       String?
   description String
   castrated   Boolean
