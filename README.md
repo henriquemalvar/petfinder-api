@@ -8,19 +8,19 @@ API para gerenciamento de pets e adoção de animais.
 - Express
 - TypeScript
 - Prisma
-- PostgreSQL
+- SQLite
+- JWT para autenticação
 
 ## 📋 Pré-requisitos
 
 - Node.js (versão 18 ou superior)
-- PostgreSQL
 - npm ou yarn
 
 ## 🔧 Instalação
 
 1. Clone o repositório:
 ```bash
-git clone https://github.com/seu-usuario/petfinder-api.git
+git clone https://github.com/henriquemalvar/petfinder-api.git
 cd petfinder-api
 ```
 
@@ -49,18 +49,32 @@ npm run dev
 yarn dev
 ```
 
-## 📝 Documentação da API
+## 📝 Rotas da API
 
-A documentação da API estará disponível em `/api-docs` quando o servidor estiver rodando.
+### Autenticação
 
-## 🤝 Contribuindo
+Todas as rotas (exceto login e registro) requerem um token JWT no header `Authorization: Bearer <token>`.
 
-1. Faça um fork do projeto
-2. Crie uma branch para sua feature (`git checkout -b feature/AmazingFeature`)
-3. Commit suas mudanças (`git commit -m 'Add some AmazingFeature'`)
-4. Push para a branch (`git push origin feature/AmazingFeature`)
-5. Abra um Pull Request
+- `POST /api/auth/register` - Registro de usuário
+- `POST /api/auth/login` - Login de usuário
 
-## 📄 Licença
+### Pets
 
-Este projeto está sob a licença MIT. Veja o arquivo [LICENSE](LICENSE) para mais detalhes. 
+- `GET /api/pets` - Listar todos os pets
+- `GET /api/pets/:id` - Buscar pet por ID
+- `POST /api/pets` - Criar pet
+- `PUT /api/pets/:id` - Atualizar pet
+- `PATCH /api/pets/:id` - Atualizar pet parcialmente
+- `DELETE /api/pets/:id` - Deletar pet
+- `GET /api/pets/user/:userId` - Buscar pets por usuário
+
+### Posts
+
+- `GET /api/posts` - Listar todos os posts
+- `GET /api/posts/:id` - Buscar post por ID
+- `POST /api/posts` - Criar post
+- `PUT /api/posts/:id` - Atualizar post
+- `PATCH /api/posts/:id` - Atualizar post parcialmente
+- `DELETE /api/posts/:id` - Deletar post
+- `GET /api/posts/user/:userId` - Buscar posts por usuário
+- `GET /api/posts/pet/:petId` - Buscar posts por pet
