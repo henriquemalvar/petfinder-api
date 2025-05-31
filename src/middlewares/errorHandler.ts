@@ -11,8 +11,8 @@ export const errorHandler = (
 ) => {
   if (error instanceof AppError) {
     return res.status(error.statusCode).json({
-      status: 'error',
-      message: error.message
+      error: error.message,
+      details: error.details
     });
   }
 
@@ -35,7 +35,6 @@ export const errorHandler = (
   console.error(error);
 
   return res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({
-    status: 'error',
-    message: 'Erro interno do servidor'
+    error: 'Erro interno do servidor'
   });
 }; 
