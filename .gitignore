@@ -69,3 +69,4 @@ debug.log
 # TypeScript
 *.tsbuildinfo
 tsconfig.tsbuildinfo 
+.cursor/
