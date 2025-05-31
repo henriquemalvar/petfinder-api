@@ -1,0 +1,70 @@
+export type User = {
+  id: string;
+  name: string;
+  email: string;
+  password: string;
+  avatar: string | null;
+  whatsapp: string | null;
+  instagram: string | null;
+  contactPreference: string | null;
+  createdAt: Date;
+  updatedAt: Date;
+  pets?: Pet[];
+  posts?: Post[];
+};
+
+export type Pet = {
+  id: string;
+  name: string;
+  type: string;
+  breed: string;
+  age: string;
+  image?: string;
+  description: string;
+  castrated: boolean;
+  vaccinated: boolean;
+  location: string;
+  createdAt: Date;
+  updatedAt: Date;
+  userId: string;
+  user?: User;
+  posts?: Post[];
+};
+
+export type Post = {
+  id: string;
+  petId: string;
+  userId: string;
+  type: PostType;
+  location: string;
+  status: PostStatus;
+  createdAt: Date;
+  updatedAt: Date;
+  pet?: Pet;
+  user?: User;
+};
+
+export enum PostType {
+  LOST = 'LOST',
+  FOUND = 'FOUND',
+  ADOPTION = 'ADOPTION'
+}
+
+export enum PostStatus {
+  ACTIVE = 'ACTIVE',
+  RESOLVED = 'RESOLVED',
+  CANCELED = 'CANCELED'
+}
+
+// Tipos para criação
+export type CreateUserDTO = Omit<User, 'id' | 'createdAt' | 'updatedAt' | 'pets' | 'posts'>;
+export type CreatePetDTO = Omit<Pet, 'id' | 'createdAt' | 'updatedAt' | 'user' | 'posts'>;
+export type CreatePostDTO = Omit<Post, 'id' | 'createdAt' | 'updatedAt' | 'pet' | 'user'>;
+
+// Tipos para atualização
+export type UpdateUserDTO = Partial<CreateUserDTO>;
+export type UpdatePetDTO = Partial<CreatePetDTO>;
+export type UpdatePostDTO = Partial<CreatePostDTO>;
+
+// Tipos para resposta (sem senha)
+export type UserResponse = Omit<User, 'password'>; 
