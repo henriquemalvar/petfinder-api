@@ -40,15 +40,27 @@ model Pet {
   posts       Post[]
 }
 
+enum PostType {
+  LOST
+  FOUND
+  ADOPTION
+}
+
+enum PostStatus {
+  ACTIVE
+  RESOLVED
+  CANCELED
+}
+
 model Post {
-  id        String   @id @default(uuid())
-  pet       Pet      @relation(fields: [petId], references: [id], onDelete: Cascade)
+  id        String     @id @default(uuid())
+  pet       Pet        @relation(fields: [petId], references: [id], onDelete: Cascade)
   petId     String
-  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  user      User       @relation(fields: [userId], references: [id], onDelete: Cascade)
   userId    String
-  type      String   // LOST, FOUND, ADOPTION
+  type      PostType
   location  String
-  status    String   // ACTIVE, RESOLVED, CANCELED
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
+  status    PostStatus
+  createdAt DateTime   @default(now())
+  updatedAt DateTime   @updatedAt
 }
