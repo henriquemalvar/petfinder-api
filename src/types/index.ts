@@ -1,4 +1,4 @@
-import { PostStatus, PostType } from '@prisma/client';
+import { PetGender, PetSize, PostStatus, PostType } from '@prisma/client';
 
 export type User = {
   id: string;
@@ -21,6 +21,8 @@ export type Pet = {
   type: string;
   breed: string;
   age: string;
+  gender: PetGender;
+  size: PetSize;
   image: string | null;
   description: string;
   castrated: boolean;
@@ -33,7 +35,10 @@ export type Pet = {
   posts?: Post[];
 };
 
-export type PetCreate = Omit<Pet, 'id' | 'createdAt' | 'updatedAt' | 'user' | 'posts'>;
+export type PetCreate = Omit<Pet, 'id' | 'createdAt' | 'updatedAt' | 'user' | 'posts'> & {
+  gender: PetGender;
+  size: PetSize;
+};
 
 export type Post = {
   id: string;
@@ -55,6 +60,8 @@ export interface CreatePetDTO {
   type: string;
   breed: string;
   age: string;
+  gender: PetGender;
+  size: PetSize;
   image?: string;
   description: string;
   castrated: boolean;
@@ -71,6 +78,8 @@ export interface UpdatePetDTO {
   type?: string;
   breed?: string;
   age?: string;
+  gender?: PetGender;
+  size?: PetSize;
   image?: string;
   description?: string;
   castrated?: boolean;
