@@ -1,6 +1,7 @@
 import { RequestHandler, Router } from 'express';
 import { authMiddleware } from '../middlewares/auth';
 import authRoutes from './auth.routes';
+import petRoutes from './pet.routes';
 import userRoutes from './user.routes';
 
 const router = Router();
@@ -10,5 +11,6 @@ router.use('/auth', authRoutes);
 
 // Rotas protegidas
 router.use('/users', authMiddleware as RequestHandler, userRoutes);
+router.use('/pets', authMiddleware as RequestHandler, petRoutes);
 
 export default router; 

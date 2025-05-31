@@ -19,7 +19,7 @@ export type Pet = {
   type: string;
   breed: string;
   age: string;
-  image?: string;
+  image: string | null;
   description: string;
   castrated: boolean;
   vaccinated: boolean;
@@ -30,6 +30,8 @@ export type Pet = {
   user?: User;
   posts?: Post[];
 };
+
+export type PetCreate = Omit<Pet, 'id' | 'createdAt' | 'updatedAt' | 'user' | 'posts'>;
 
 export type Post = {
   id: string;
@@ -58,13 +60,35 @@ export enum PostStatus {
 
 // Tipos para criação
 export type CreateUserDTO = Omit<User, 'id' | 'createdAt' | 'updatedAt' | 'pets' | 'posts'>;
-export type CreatePetDTO = Omit<Pet, 'id' | 'createdAt' | 'updatedAt' | 'user' | 'posts'>;
+export interface CreatePetDTO {
+  name: string;
+  type: string;
+  breed: string;
+  age: string;
+  image?: string;
+  description: string;
+  castrated: boolean;
+  vaccinated: boolean;
+  location: string;
+  userId: string;
+}
 export type CreatePostDTO = Omit<Post, 'id' | 'createdAt' | 'updatedAt' | 'pet' | 'user'>;
 
 // Tipos para atualização
 export type UpdateUserDTO = Partial<CreateUserDTO>;
-export type UpdatePetDTO = Partial<CreatePetDTO>;
+export interface UpdatePetDTO {
+  name?: string;
+  type?: string;
+  breed?: string;
+  age?: string;
+  image?: string;
+  description?: string;
+  castrated?: boolean;
+  vaccinated?: boolean;
+  location?: string;
+}
 export type UpdatePostDTO = Partial<CreatePostDTO>;
 
 // Tipos para resposta (sem senha)
-export type UserResponse = Omit<User, 'password'>; 
+export type UserResponse = Omit<User, 'password'>;
+export type PetResponse = Omit<Pet, 'password'>; 
