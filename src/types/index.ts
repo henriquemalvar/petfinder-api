@@ -1,3 +1,5 @@
+import { PostStatus, PostType } from '@prisma/client';
+
 export type User = {
   id: string;
   name: string;
@@ -45,18 +47,6 @@ export type Post = {
   pet?: Pet;
   user?: User;
 };
-
-export enum PostType {
-  LOST = 'LOST',
-  FOUND = 'FOUND',
-  ADOPTION = 'ADOPTION'
-}
-
-export enum PostStatus {
-  ACTIVE = 'ACTIVE',
-  RESOLVED = 'RESOLVED',
-  CANCELED = 'CANCELED'
-}
 
 // Tipos para criação
 export type CreateUserDTO = Omit<User, 'id' | 'createdAt' | 'updatedAt' | 'pets' | 'posts'>;
