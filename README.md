@@ -8,12 +8,13 @@ API para gerenciamento de pets e adoção de animais.
 - Express
 - TypeScript
 - Prisma
-- SQLite
+- PostgreSQL (Supabase)
 - JWT para autenticação
 
 ## 📋 Pré-requisitos
 
 - Node.js (versão 18 ou superior)
+- Conta no Supabase
 - npm ou yarn
 
 ## 🔧 Instalação
@@ -35,7 +36,10 @@ yarn install
 ```bash
 cp .env.example .env
 ```
-Edite o arquivo `.env` com suas configurações.
+Edite o arquivo `.env` com suas configurações do Supabase:
+- `DATABASE_URL`: URL de conexão do seu banco de dados Supabase
+- `JWT_SECRET`: Chave secreta para geração dos tokens JWT
+- `PORT`: Porta onde a API irá rodar (opcional, padrão: 3000)
 
 4. Execute as migrações do banco de dados:
 ```bash
