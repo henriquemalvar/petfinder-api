@@ -8,7 +8,11 @@ export const validate = (schema: AnyZodObject) => (
   next: NextFunction
 ): Promise<void> | void => {
   try {
-    schema.parseAsync(req.body).then(() => {
+    schema.parseAsync({
+      body: req.body,
+      params: req.params,
+      query: req.query
+    }).then(() => {
       next();
     }).catch((error) => {
       if (error instanceof ZodError) {

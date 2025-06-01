@@ -276,6 +276,8 @@ router.delete('/:id', authMiddleware, petController.delete);
  *         required: true
  *         schema:
  *           type: string
+ *           format: uuid
+ *         description: ID do usuário (formato UUID)
  *     responses:
  *       200:
  *         description: Lista de pets do usuário
@@ -303,10 +305,46 @@ router.delete('/:id', authMiddleware, petController.delete);
  *                     type: array
  *                     items:
  *                       type: string
+ *       400:
+ *         description: Requisição inválida
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 error:
+ *                   type: string
+ *                   example: ID de usuário inválido
  *       401:
  *         description: Não autorizado
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 error:
+ *                   type: string
+ *                   example: Token não fornecido
+ *       403:
+ *         description: Acesso negado
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 error:
+ *                   type: string
+ *                   example: Não autorizado a acessar pets de outro usuário
  *       404:
  *         description: Usuário não encontrado
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 error:
+ *                   type: string
+ *                   example: Usuário não encontrado
  */
 router.get('/user/:userId', authMiddleware, validate(userIdParamSchema), petController.findByUserId);
 
