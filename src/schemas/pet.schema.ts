@@ -1,7 +1,8 @@
+import { PetGender, PetSize } from '@prisma/client';
 import { z } from 'zod';
 
-export const petGenderEnum = z.enum(['MALE', 'FEMALE']);
-export const petSizeEnum = z.enum(['SMALL', 'MEDIUM', 'LARGE']);
+export const petGenderEnum = z.nativeEnum(PetGender);
+export const petSizeEnum = z.nativeEnum(PetSize);
 
 export const userIdParamSchema = z.object({
   params: z.object({
