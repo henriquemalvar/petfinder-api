@@ -1,5 +1,5 @@
 import { Pet, PrismaClient } from '@prisma/client';
-import { PetCreate } from '../types';
+import { PetCreate, PetResponse } from '../types';
 import { IRepository } from './interfaces/IRepository';
 
 export class PetRepository implements IRepository<Pet> {
@@ -9,26 +9,39 @@ export class PetRepository implements IRepository<Pet> {
     this.prisma = new PrismaClient();
   }
 
-  async findAll(): Promise<Pet[]> {
-    return this.prisma.pet.findMany();
+  async findAll(): Promise<PetResponse[]> {
+    return this.prisma.pet.findMany({
+      include: {
+        user: true
+      }
+    });
   }
 
-  async findById(id: string): Promise<Pet | null> {
+  async findById(id: string): Promise<PetResponse | null> {
     return this.prisma.pet.findUnique({
-      where: { id }
+      where: { id },
+      include: {
+        user: true
+      }
     });
   }
 
-  async create(data: PetCreate): Promise<Pet> {
+  async create(data: PetCreate): Promise<PetResponse> {
     return this.prisma.pet.create({
-      data
+      data,
+      include: {
+        user: true
+      }
     });
   }
 
-  async update(id: string, data: Partial<PetCreate>): Promise<Pet> {
+  async update(id: string, data: Partial<PetCreate>): Promise<PetResponse> {
     return this.prisma.pet.update({
       where: { id },
-      data
+      data,
+      include: {
+        user: true
+      }
     });
   }
 
@@ -38,9 +51,12 @@ export class PetRepository implements IRepository<Pet> {
     });
   }
 
-  async findByUserId(userId: string): Promise<Pet[]> {
+  async findByUserId(userId: string): Promise<PetResponse[]> {
     return this.prisma.pet.findMany({
-      where: { userId }
+      where: { userId },
+      include: {
+        user: true
+      }
     });
   }
 } 

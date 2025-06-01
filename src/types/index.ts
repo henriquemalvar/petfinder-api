@@ -90,4 +90,4 @@ export type UpdatePostDTO = Partial<CreatePostDTO>;
 
 // Tipos para resposta (sem senha)
 export type UserResponse = Omit<User, 'password'>;
-export type PetResponse = Omit<Pet, 'password'>; 
+export type PetResponse = Pet; 
