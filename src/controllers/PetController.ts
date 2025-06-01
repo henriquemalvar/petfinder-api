@@ -1,5 +1,6 @@
 import { NextFunction, Request, Response } from 'express';
 import { StatusCodes } from 'http-status-codes';
+import { AppError } from '../errors/AppError';
 import { PetService } from '../services/PetService';
 import { CreatePetDTO, UpdatePetDTO } from '../types';
 
@@ -77,10 +78,16 @@ export class PetController {
   findByUserId = async (req: Request, res: Response, next: NextFunction) => {
     try {
       const { userId } = req.params;
+      
+      // Verifica se o usuário está tentando acessar seus próprios pets
+      if (userId !== req.user.id) {
+        throw new AppError('Não autorizado a acessar pets de outro usuário', StatusCodes.FORBIDDEN);
+      }
+
       const pets = await this.petService.findByUserId(userId);
       res.status(StatusCodes.OK).json(pets);
     } catch (error) {
-      res.status(500).json({ error: error instanceof Error ? error.message : error });
+      next(error);
     }
   };
 } 

@@ -119,7 +119,15 @@ export class PetRepository implements IRepository<PetResponse> {
             createdAt: true,
             updatedAt: true
           }
+        },
+        posts: {
+          orderBy: {
+            createdAt: 'desc'
+          }
         }
+      },
+      orderBy: {
+        createdAt: 'desc'
       }
     });
     return pets as PetResponse[];

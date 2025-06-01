@@ -3,6 +3,10 @@ import { z } from 'zod';
 export const petGenderEnum = z.enum(['MALE', 'FEMALE']);
 export const petSizeEnum = z.enum(['SMALL', 'MEDIUM', 'LARGE']);
 
+export const userIdParamSchema = z.object({
+  userId: z.string().uuid('ID de usuário inválido')
+});
+
 export const createPetSchema = z.object({
   name: z.string().min(2, 'Nome deve ter no mínimo 2 caracteres'),
   type: z.string().min(2, 'Tipo deve ter no mínimo 2 caracteres'),

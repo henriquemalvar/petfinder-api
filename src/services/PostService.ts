@@ -1,4 +1,4 @@
-import { Post } from '@prisma/client';
+import { Post, PrismaClient } from '@prisma/client';
 import { StatusCodes } from 'http-status-codes';
 import { AppError } from '../errors/AppError';
 import { PostRepository } from '../repositories/PostRepository';
@@ -6,9 +6,11 @@ import { CreatePostDTO, UpdatePostDTO } from '../types';
 
 export class PostService {
   private repository: PostRepository;
+  private prisma: PrismaClient;
 
   constructor() {
     this.repository = new PostRepository();
+    this.prisma = new PrismaClient();
   }
 
   async findAll(): Promise<Post[]> {
@@ -50,6 +52,16 @@ export class PostService {
   }
 
   async findByUserId(userId: string): Promise<Post[]> {
+    // Verifica se o usuário existe
+    const user = await this.prisma.user.findUnique({
+      where: { id: userId }
+    });
+
+    if (!user) {
+      throw new AppError('Usuário não encontrado', StatusCodes.NOT_FOUND);
+    }
+
+    // Busca os posts ordenados por data de criação (mais recentes primeiro)
     return this.repository.findByUserId(userId);
   }
 

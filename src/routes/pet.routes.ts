@@ -2,7 +2,7 @@ import { Router } from 'express';
 import { PetController } from '../controllers/PetController';
 import { authMiddleware } from '../middlewares/auth';
 import { validate } from '../middlewares/validate';
-import { createPetSchema, updatePetSchema } from '../schemas/pet.schema';
+import { createPetSchema, updatePetSchema, userIdParamSchema } from '../schemas/pet.schema';
 
 const router = Router();
 const petController = new PetController();
@@ -308,6 +308,6 @@ router.delete('/:id', authMiddleware, petController.delete);
  *       404:
  *         description: Usuário não encontrado
  */
-router.get('/user/:userId', petController.findByUserId);
+router.get('/user/:userId', authMiddleware, validate(userIdParamSchema), petController.findByUserId);
 
 export default router; 

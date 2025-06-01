@@ -61,6 +61,9 @@ export class PostRepository implements IRepository<Post> {
       include: {
         pet: true,
         user: true
+      },
+      orderBy: {
+        createdAt: 'desc'
       }
     });
   }
