@@ -3,6 +3,7 @@ import { NextFunction, Request, Response } from 'express';
 import { StatusCodes } from 'http-status-codes';
 import * as jwt from 'jsonwebtoken';
 import { UserResponse } from '../types';
+
 const prisma = new PrismaClient();
 
 interface TokenPayload {
@@ -11,15 +12,16 @@ interface TokenPayload {
   exp: number;
 }
 
-export const authMiddleware = async (
+export const authMiddleware = (
   req: Request,
   res: Response,
   next: NextFunction
-) => {
+): Promise<void> | void => {
   const { authorization } = req.headers;
 
   if (!authorization) {
-    return res.status(StatusCodes.UNAUTHORIZED).json({ error: 'Token não fornecido' });
+    res.status(StatusCodes.UNAUTHORIZED).json({ error: 'Token não fornecido' });
+    return;
   }
 
   const token = authorization.replace('Bearer', '').trim();
@@ -27,7 +29,7 @@ export const authMiddleware = async (
   try {
     const data = jwt.verify(token, process.env.JWT_SECRET || 'default_secret') as TokenPayload;
     
-    const user = await prisma.user.findUnique({
+    prisma.user.findUnique({
       where: { id: data.id },
       select: {
         id: true,
@@ -40,15 +42,18 @@ export const authMiddleware = async (
         createdAt: true,
         updatedAt: true
       }
+    }).then(user => {
+      if (!user) {
+        res.status(StatusCodes.UNAUTHORIZED).json({ error: 'Usuário não encontrado' });
+        return;
+      }
+
+      req.user = user as UserResponse;
+      next();
+    }).catch(() => {
+      res.status(StatusCodes.UNAUTHORIZED).json({ error: 'Token inválido' });
     });
-
-    if (!user) {
-      return res.status(StatusCodes.UNAUTHORIZED).json({ error: 'Usuário não encontrado' });
-    }
-
-    req.user = user as UserResponse;
-    return next();
   } catch (error) {
-    return res.status(StatusCodes.UNAUTHORIZED).json({ error: 'Token inválido' });
+    res.status(StatusCodes.UNAUTHORIZED).json({ error: 'Token inválido' });
   }
 }; 
