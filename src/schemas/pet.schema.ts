@@ -14,8 +14,7 @@ export const createPetSchema = z.object({
   description: z.string().min(10, 'Descrição deve ter no mínimo 10 caracteres'),
   castrated: z.boolean(),
   vaccinated: z.boolean(),
-  location: z.string().min(2, 'Localização deve ter no mínimo 2 caracteres'),
-  userId: z.string().uuid('ID de usuário inválido')
+  location: z.string().min(2, 'Localização deve ter no mínimo 2 caracteres')
 });
 
 export const updatePetSchema = createPetSchema.partial();
