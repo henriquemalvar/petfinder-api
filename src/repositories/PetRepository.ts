@@ -1,8 +1,8 @@
-import { Pet, PrismaClient } from '@prisma/client';
+import { PrismaClient } from '@prisma/client';
 import { PetCreate, PetResponse } from '../types';
 import { IRepository } from './interfaces/IRepository';
 
-export class PetRepository implements IRepository<Pet> {
+export class PetRepository implements IRepository<PetResponse> {
   private prisma: PrismaClient;
 
   constructor() {
@@ -10,39 +10,91 @@ export class PetRepository implements IRepository<Pet> {
   }
 
   async findAll(): Promise<PetResponse[]> {
-    return this.prisma.pet.findMany({
+    const pets = await this.prisma.pet.findMany({
       include: {
-        user: true
+        user: {
+          select: {
+            id: true,
+            name: true,
+            email: true,
+            avatar: true,
+            whatsapp: true,
+            instagram: true,
+            contactPreference: true,
+            createdAt: true,
+            updatedAt: true
+          }
+        }
       }
     });
+    return pets as PetResponse[];
   }
 
   async findById(id: string): Promise<PetResponse | null> {
-    return this.prisma.pet.findUnique({
+    const pet = await this.prisma.pet.findUnique({
       where: { id },
       include: {
-        user: true
+        user: {
+          select: {
+            id: true,
+            name: true,
+            email: true,
+            avatar: true,
+            whatsapp: true,
+            instagram: true,
+            contactPreference: true,
+            createdAt: true,
+            updatedAt: true
+          }
+        }
       }
     });
+    return pet as PetResponse | null;
   }
 
   async create(data: PetCreate): Promise<PetResponse> {
-    return this.prisma.pet.create({
+    const pet = await this.prisma.pet.create({
       data,
       include: {
-        user: true
+        user: {
+          select: {
+            id: true,
+            name: true,
+            email: true,
+            avatar: true,
+            whatsapp: true,
+            instagram: true,
+            contactPreference: true,
+            createdAt: true,
+            updatedAt: true
+          }
+        }
       }
     });
+    return pet as PetResponse;
   }
 
   async update(id: string, data: Partial<PetCreate>): Promise<PetResponse> {
-    return this.prisma.pet.update({
+    const pet = await this.prisma.pet.update({
       where: { id },
       data,
       include: {
-        user: true
+        user: {
+          select: {
+            id: true,
+            name: true,
+            email: true,
+            avatar: true,
+            whatsapp: true,
+            instagram: true,
+            contactPreference: true,
+            createdAt: true,
+            updatedAt: true
+          }
+        }
       }
     });
+    return pet as PetResponse;
   }
 
   async delete(id: string): Promise<void> {
@@ -52,11 +104,24 @@ export class PetRepository implements IRepository<Pet> {
   }
 
   async findByUserId(userId: string): Promise<PetResponse[]> {
-    return this.prisma.pet.findMany({
+    const pets = await this.prisma.pet.findMany({
       where: { userId },
       include: {
-        user: true
+        user: {
+          select: {
+            id: true,
+            name: true,
+            email: true,
+            avatar: true,
+            whatsapp: true,
+            instagram: true,
+            contactPreference: true,
+            createdAt: true,
+            updatedAt: true
+          }
+        }
       }
     });
+    return pets as PetResponse[];
   }
 } 

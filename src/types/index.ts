@@ -1,4 +1,15 @@
-import { PetGender, PetSize, PostStatus, PostType } from '@prisma/client';
+import { PostStatus, PostType } from '@prisma/client';
+
+export enum PetGender {
+  MALE = 'MALE',
+  FEMALE = 'FEMALE'
+}
+
+export enum PetSize {
+  SMALL = 'SMALL',
+  MEDIUM = 'MEDIUM',
+  LARGE = 'LARGE'
+}
 
 export type User = {
   id: string;
@@ -42,6 +53,8 @@ export type PetCreate = Omit<Pet, 'id' | 'createdAt' | 'updatedAt' | 'user' | 'p
 
 export type Post = {
   id: string;
+  title: string;
+  content: string;
   petId: string;
   userId: string;
   type: PostType;
