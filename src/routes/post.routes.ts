@@ -74,15 +74,67 @@ router.post('/', authMiddleware, validate(createPostSchema), postController.crea
  *                     type: string
  *                   content:
  *                     type: string
- *                   petId:
+ *                   type:
  *                     type: string
- *                   photos:
- *                     type: array
- *                     items:
- *                       type: string
+ *                     enum: [LOST, FOUND, ADOPTION]
+ *                   location:
+ *                     type: string
+ *                   status:
+ *                     type: string
+ *                     enum: [ACTIVE, RESOLVED, CANCELED]
  *                   createdAt:
  *                     type: string
  *                     format: date-time
+ *                   updatedAt:
+ *                     type: string
+ *                     format: date-time
+ *                   pet:
+ *                     type: object
+ *                     properties:
+ *                       id:
+ *                         type: string
+ *                       name:
+ *                         type: string
+ *                       type:
+ *                         type: string
+ *                       breed:
+ *                         type: string
+ *                       age:
+ *                         type: string
+ *                       gender:
+ *                         type: string
+ *                         enum: [MALE, FEMALE]
+ *                       size:
+ *                         type: string
+ *                         enum: [SMALL, MEDIUM, LARGE]
+ *                       image:
+ *                         type: string
+ *                       description:
+ *                         type: string
+ *                       castrated:
+ *                         type: boolean
+ *                       vaccinated:
+ *                         type: boolean
+ *                       location:
+ *                         type: string
+ *                   user:
+ *                     type: object
+ *                     properties:
+ *                       id:
+ *                         type: string
+ *                       name:
+ *                         type: string
+ *                       email:
+ *                         type: string
+ *                       avatar:
+ *                         type: string
+ *                       whatsapp:
+ *                         type: string
+ *                       instagram:
+ *                         type: string
+ *                       contactPreference:
+ *                         type: string
+ *                         enum: [WHATSAPP, INSTAGRAM]
  */
 router.get('/', postController.findAll);
 
@@ -251,15 +303,67 @@ router.delete('/:id', authMiddleware, postController.delete);
  *                     type: string
  *                   content:
  *                     type: string
- *                   petId:
+ *                   type:
  *                     type: string
- *                   photos:
- *                     type: array
- *                     items:
- *                       type: string
+ *                     enum: [LOST, FOUND, ADOPTION]
+ *                   location:
+ *                     type: string
+ *                   status:
+ *                     type: string
+ *                     enum: [ACTIVE, RESOLVED, CANCELED]
  *                   createdAt:
  *                     type: string
  *                     format: date-time
+ *                   updatedAt:
+ *                     type: string
+ *                     format: date-time
+ *                   pet:
+ *                     type: object
+ *                     properties:
+ *                       id:
+ *                         type: string
+ *                       name:
+ *                         type: string
+ *                       type:
+ *                         type: string
+ *                       breed:
+ *                         type: string
+ *                       age:
+ *                         type: string
+ *                       gender:
+ *                         type: string
+ *                         enum: [MALE, FEMALE]
+ *                       size:
+ *                         type: string
+ *                         enum: [SMALL, MEDIUM, LARGE]
+ *                       image:
+ *                         type: string
+ *                       description:
+ *                         type: string
+ *                       castrated:
+ *                         type: boolean
+ *                       vaccinated:
+ *                         type: boolean
+ *                       location:
+ *                         type: string
+ *                   user:
+ *                     type: object
+ *                     properties:
+ *                       id:
+ *                         type: string
+ *                       name:
+ *                         type: string
+ *                       email:
+ *                         type: string
+ *                       avatar:
+ *                         type: string
+ *                       whatsapp:
+ *                         type: string
+ *                       instagram:
+ *                         type: string
+ *                       contactPreference:
+ *                         type: string
+ *                         enum: [WHATSAPP, INSTAGRAM]
  *       404:
  *         description: Usuário não encontrado
  */
@@ -294,15 +398,67 @@ router.get('/user/:userId', postController.findByUserId);
  *                     type: string
  *                   content:
  *                     type: string
- *                   petId:
+ *                   type:
  *                     type: string
- *                   photos:
- *                     type: array
- *                     items:
- *                       type: string
+ *                     enum: [LOST, FOUND, ADOPTION]
+ *                   location:
+ *                     type: string
+ *                   status:
+ *                     type: string
+ *                     enum: [ACTIVE, RESOLVED, CANCELED]
  *                   createdAt:
  *                     type: string
  *                     format: date-time
+ *                   updatedAt:
+ *                     type: string
+ *                     format: date-time
+ *                   pet:
+ *                     type: object
+ *                     properties:
+ *                       id:
+ *                         type: string
+ *                       name:
+ *                         type: string
+ *                       type:
+ *                         type: string
+ *                       breed:
+ *                         type: string
+ *                       age:
+ *                         type: string
+ *                       gender:
+ *                         type: string
+ *                         enum: [MALE, FEMALE]
+ *                       size:
+ *                         type: string
+ *                         enum: [SMALL, MEDIUM, LARGE]
+ *                       image:
+ *                         type: string
+ *                       description:
+ *                         type: string
+ *                       castrated:
+ *                         type: boolean
+ *                       vaccinated:
+ *                         type: boolean
+ *                       location:
+ *                         type: string
+ *                   user:
+ *                     type: object
+ *                     properties:
+ *                       id:
+ *                         type: string
+ *                       name:
+ *                         type: string
+ *                       email:
+ *                         type: string
+ *                       avatar:
+ *                         type: string
+ *                       whatsapp:
+ *                         type: string
+ *                       instagram:
+ *                         type: string
+ *                       contactPreference:
+ *                         type: string
+ *                         enum: [WHATSAPP, INSTAGRAM]
  *       404:
  *         description: Pet não encontrado
  */

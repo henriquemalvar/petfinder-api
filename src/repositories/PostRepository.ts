@@ -13,7 +13,16 @@ export class PostRepository implements IRepository<Post> {
     return this.prisma.post.findMany({
       include: {
         pet: true,
-        user: true
+        user: {
+          select: {
+            id: true,
+            name: true,
+            avatar: true,
+            whatsapp: true,
+            instagram: true,
+            contactPreference: true
+          }
+        }
       }
     });
   }
@@ -23,7 +32,16 @@ export class PostRepository implements IRepository<Post> {
       where: { id },
       include: {
         pet: true,
-        user: true
+        user: {
+          select: {
+            id: true,
+            name: true,
+            avatar: true,
+            whatsapp: true,
+            instagram: true,
+            contactPreference: true
+          }
+        }
       }
     });
   }
@@ -33,7 +51,16 @@ export class PostRepository implements IRepository<Post> {
       data,
       include: {
         pet: true,
-        user: true
+        user: {
+          select: {
+            id: true,
+            name: true,
+            avatar: true,
+            whatsapp: true,
+            instagram: true,
+            contactPreference: true
+          }
+        }
       }
     });
   }
@@ -44,7 +71,16 @@ export class PostRepository implements IRepository<Post> {
       data,
       include: {
         pet: true,
-        user: true
+        user: {
+          select: {
+            id: true,
+            name: true,
+            avatar: true,
+            whatsapp: true,
+            instagram: true,
+            contactPreference: true
+          }
+        }
       }
     });
   }
@@ -60,7 +96,16 @@ export class PostRepository implements IRepository<Post> {
       where: { userId },
       include: {
         pet: true,
-        user: true
+        user: {
+          select: {
+            id: true,
+            name: true,
+            avatar: true,
+            whatsapp: true,
+            instagram: true,
+            contactPreference: true
+          }
+        }
       },
       orderBy: {
         createdAt: 'desc'
@@ -73,7 +118,16 @@ export class PostRepository implements IRepository<Post> {
       where: { petId },
       include: {
         pet: true,
-        user: true
+        user: {
+          select: {
+            id: true,
+            name: true,
+            avatar: true,
+            whatsapp: true,
+            instagram: true,
+            contactPreference: true
+          }
+        }
       }
     });
   }
