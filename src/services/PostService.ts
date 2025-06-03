@@ -3,14 +3,17 @@ import { StatusCodes } from 'http-status-codes';
 import { AppError } from '../errors/AppError';
 import { PostRepository } from '../repositories/PostRepository';
 import { CreatePostDTO, PostFilters, UpdatePostDTO } from '../types';
+import { NotificationService } from './NotificationService';
 
 export class PostService {
   private repository: PostRepository;
   private prisma: PrismaClient;
+  private notificationService: NotificationService;
 
   constructor() {
     this.repository = new PostRepository();
     this.prisma = new PrismaClient();
+    this.notificationService = new NotificationService();
   }
 
   async findAll(): Promise<Post[]> {
@@ -32,7 +35,9 @@ export class PostService {
   }
 
   async create(data: CreatePostDTO): Promise<Post> {
-    return this.repository.create(data);
+    const post = await this.repository.create(data);
+    await this.notificationService.notifyNearbyUsers(post);
+    return post;
   }
 
   async update(id: string, data: UpdatePostDTO): Promise<Post> {
@@ -42,7 +47,9 @@ export class PostService {
       throw new AppError('Post não encontrado', StatusCodes.NOT_FOUND);
     }
 
-    return this.repository.update(id, data);
+    const updated = await this.repository.update(id, data);
+    await this.notificationService.notifyNearbyUsers(updated);
+    return updated;
   }
 
   async delete(id: string): Promise<void> {
