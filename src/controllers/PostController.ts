@@ -35,16 +35,16 @@ export class PostController {
   findAllWithFilters = async (req: Request, res: Response, next: NextFunction) => {
     try {
       const filters: PostFilters = {
-        type: req.body.type,
-        status: req.body.status,
-        location: req.body.location,
-        petType: req.body.petType,
-        petGender: req.body.petGender,
-        petSize: req.body.petSize,
-        userId: req.body.userId,
-        search: req.body.search,
-        page: req.body.page,
-        limit: req.body.limit
+        type: req.query.type as any,
+        status: req.query.status as any,
+        location: req.query.location as string,
+        petType: req.query.petType as string,
+        petGender: req.query.petGender as any,
+        petSize: req.query.petSize as any,
+        userId: req.query.userId as string,
+        search: req.query.search as string,
+        page: req.query.page ? Number(req.query.page) : undefined,
+        limit: req.query.limit ? Number(req.query.limit) : undefined
       };
 
       const result = await this.postService.findAllWithFilters(filters);

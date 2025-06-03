@@ -57,86 +57,62 @@ router.post('/', authMiddleware, validate(createPostSchema), postController.crea
  *   get:
  *     tags:
  *       - Posts
- *     summary: Lista todos os posts
+ *     summary: Lista posts com filtros
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             properties:
+ *               type:
+ *                 type: string
+ *                 enum: [LOST, FOUND, ADOPTION]
+ *               status:
+ *                 type: string
+ *                 enum: [ACTIVE, RESOLVED, CANCELED]
+ *               location:
+ *                 type: string
+ *               petType:
+ *                 type: string
+ *               petGender:
+ *                 type: string
+ *                 enum: [MALE, FEMALE]
+ *               petSize:
+ *                 type: string
+ *                 enum: [SMALL, MEDIUM, LARGE]
+ *               userId:
+ *                 type: string
+ *               search:
+ *                 type: string
+ *               page:
+ *                 type: integer
+ *                 default: 1
+ *               limit:
+ *                 type: integer
+ *                 default: 10
  *     responses:
  *       200:
- *         description: Lista de posts
+ *         description: Lista de posts com paginação
  *         content:
  *           application/json:
  *             schema:
- *               type: array
- *               items:
- *                 type: object
- *                 properties:
- *                   id:
- *                     type: string
- *                   title:
- *                     type: string
- *                   content:
- *                     type: string
- *                   type:
- *                     type: string
- *                     enum: [LOST, FOUND, ADOPTION]
- *                   location:
- *                     type: string
- *                   status:
- *                     type: string
- *                     enum: [ACTIVE, RESOLVED, CANCELED]
- *                   createdAt:
- *                     type: string
- *                     format: date-time
- *                   updatedAt:
- *                     type: string
- *                     format: date-time
- *                   pet:
- *                     type: object
- *                     properties:
- *                       id:
- *                         type: string
- *                       name:
- *                         type: string
- *                       type:
- *                         type: string
- *                       breed:
- *                         type: string
- *                       age:
- *                         type: string
- *                       gender:
- *                         type: string
- *                         enum: [MALE, FEMALE]
- *                       size:
- *                         type: string
- *                         enum: [SMALL, MEDIUM, LARGE]
- *                       image:
- *                         type: string
- *                       description:
- *                         type: string
- *                       castrated:
- *                         type: boolean
- *                       vaccinated:
- *                         type: boolean
- *                       location:
- *                         type: string
- *                   user:
- *                     type: object
- *                     properties:
- *                       id:
- *                         type: string
- *                       name:
- *                         type: string
- *                       email:
- *                         type: string
- *                       avatar:
- *                         type: string
- *                       whatsapp:
- *                         type: string
- *                       instagram:
- *                         type: string
- *                       contactPreference:
- *                         type: string
- *                         enum: [WHATSAPP, INSTAGRAM]
+ *               type: object
+ *               properties:
+ *                 posts:
+ *                   type: array
+ *                   items:
+ *                     $ref: '#/components/schemas/Post'
+ *                 total:
+ *                   type: integer
+ *                 page:
+ *                   type: integer
+ *                 limit:
+ *                   type: integer
+ *                 totalPages:
+ *                   type: integer
  */
-router.get('/', postController.findAll);
+router.get('/', postController.findAllWithFilters);
 
 /**
  * @swagger
@@ -463,68 +439,5 @@ router.get('/user/:userId', postController.findByUserId);
  *         description: Pet não encontrado
  */
 router.get('/pet/:petId', postController.findByPetId);
-
-/**
- * @swagger
- * /api/posts/filter:
- *   post:
- *     tags:
- *       - Posts
- *     summary: Lista posts com filtros
- *     requestBody:
- *       required: true
- *       content:
- *         application/json:
- *           schema:
- *             type: object
- *             properties:
- *               type:
- *                 type: string
- *                 enum: [LOST, FOUND, ADOPTION]
- *               status:
- *                 type: string
- *                 enum: [ACTIVE, RESOLVED, CANCELED]
- *               location:
- *                 type: string
- *               petType:
- *                 type: string
- *               petGender:
- *                 type: string
- *                 enum: [MALE, FEMALE]
- *               petSize:
- *                 type: string
- *                 enum: [SMALL, MEDIUM, LARGE]
- *               userId:
- *                 type: string
- *               search:
- *                 type: string
- *               page:
- *                 type: integer
- *                 default: 1
- *               limit:
- *                 type: integer
- *                 default: 10
- *     responses:
- *       200:
- *         description: Lista de posts com paginação
- *         content:
- *           application/json:
- *             schema:
- *               type: object
- *               properties:
- *                 posts:
- *                   type: array
- *                   items:
- *                     $ref: '#/components/schemas/Post'
- *                 total:
- *                   type: integer
- *                 page:
- *                   type: integer
- *                 limit:
- *                   type: integer
- *                 totalPages:
- *                   type: integer
- */
-router.post('/filter', postController.findAllWithFilters);
 
 export default router; 
