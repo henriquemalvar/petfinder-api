@@ -2,7 +2,7 @@ import { Post, PrismaClient } from '@prisma/client';
 import { StatusCodes } from 'http-status-codes';
 import { AppError } from '../errors/AppError';
 import { PostRepository } from '../repositories/PostRepository';
-import { CreatePostDTO, UpdatePostDTO } from '../types';
+import { CreatePostDTO, PostFilters, UpdatePostDTO } from '../types';
 
 export class PostService {
   private repository: PostRepository;
@@ -15,6 +15,10 @@ export class PostService {
 
   async findAll(): Promise<Post[]> {
     return this.repository.findAll();
+  }
+
+  async findAllWithFilters(filters: PostFilters) {
+    return this.repository.findAllWithFilters(filters);
   }
 
   async findById(id: string): Promise<Post> {
