@@ -4,6 +4,7 @@ import authRoutes from './auth.routes';
 import petRoutes from './pet.routes';
 import postRoutes from './post.routes';
 import userRoutes from './user.routes';
+import notificationRoutes from './notification.routes';
 
 const router = Router();
 
@@ -14,5 +15,6 @@ router.use('/auth', authRoutes);
 router.use('/users', authMiddleware as RequestHandler, userRoutes);
 router.use('/pets', authMiddleware as RequestHandler, petRoutes);
 router.use('/posts', authMiddleware as RequestHandler, postRoutes);
+router.use('/notifications', authMiddleware as RequestHandler, notificationRoutes);
 
 export default router; 

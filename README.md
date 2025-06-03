@@ -82,3 +82,8 @@ Todas as rotas (exceto login e registro) requerem um token JWT no header `Author
 - `DELETE /api/posts/:id` - Deletar post
 - `GET /api/posts/user/:userId` - Buscar posts por usuário
 - `GET /api/posts/pet/:petId` - Buscar posts por pet
+
+### Notificações
+
+- `POST /api/notifications/register` - Registrar token de push do dispositivo
+- `POST /api/notifications/nearby` - Enviar notificações para usuários próximos
