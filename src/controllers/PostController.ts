@@ -1,7 +1,7 @@
 import { NextFunction, Request, Response } from 'express';
 import { StatusCodes } from 'http-status-codes';
 import { PostService } from '../services/PostService';
-import { CreatePostDTO, UpdatePostDTO } from '../types';
+import { CreatePostDTO, PostFilters, UpdatePostDTO } from '../types';
 
 export class PostController {
   private postService: PostService;
@@ -27,6 +27,28 @@ export class PostController {
     try {
       const posts = await this.postService.findAll();
       res.status(StatusCodes.OK).json(posts);
+    } catch (error) {
+      next(error);
+    }
+  };
+
+  findAllWithFilters = async (req: Request, res: Response, next: NextFunction) => {
+    try {
+      const filters: PostFilters = {
+        type: req.body.type,
+        status: req.body.status,
+        location: req.body.location,
+        petType: req.body.petType,
+        petGender: req.body.petGender,
+        petSize: req.body.petSize,
+        userId: req.body.userId,
+        search: req.body.search,
+        page: req.body.page,
+        limit: req.body.limit
+      };
+
+      const result = await this.postService.findAllWithFilters(filters);
+      res.status(StatusCodes.OK).json(result);
     } catch (error) {
       next(error);
     }

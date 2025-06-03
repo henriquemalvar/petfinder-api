@@ -464,4 +464,67 @@ router.get('/user/:userId', postController.findByUserId);
  */
 router.get('/pet/:petId', postController.findByPetId);
 
+/**
+ * @swagger
+ * /api/posts/filter:
+ *   post:
+ *     tags:
+ *       - Posts
+ *     summary: Lista posts com filtros
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             properties:
+ *               type:
+ *                 type: string
+ *                 enum: [LOST, FOUND, ADOPTION]
+ *               status:
+ *                 type: string
+ *                 enum: [ACTIVE, RESOLVED, CANCELED]
+ *               location:
+ *                 type: string
+ *               petType:
+ *                 type: string
+ *               petGender:
+ *                 type: string
+ *                 enum: [MALE, FEMALE]
+ *               petSize:
+ *                 type: string
+ *                 enum: [SMALL, MEDIUM, LARGE]
+ *               userId:
+ *                 type: string
+ *               search:
+ *                 type: string
+ *               page:
+ *                 type: integer
+ *                 default: 1
+ *               limit:
+ *                 type: integer
+ *                 default: 10
+ *     responses:
+ *       200:
+ *         description: Lista de posts com paginação
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 posts:
+ *                   type: array
+ *                   items:
+ *                     $ref: '#/components/schemas/Post'
+ *                 total:
+ *                   type: integer
+ *                 page:
+ *                   type: integer
+ *                 limit:
+ *                   type: integer
+ *                 totalPages:
+ *                   type: integer
+ */
+router.post('/filter', postController.findAllWithFilters);
+
 export default router; 
