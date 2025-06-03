@@ -67,7 +67,19 @@ export type Post = {
 };
 
 // Tipos para criação
-export type CreateUserDTO = Omit<User, 'id' | 'createdAt' | 'updatedAt' | 'pets' | 'posts'>;
+export interface CreateUserDTO {
+  name: string;
+  email: string;
+  password: string;
+  avatar?: string;
+  whatsapp?: string;
+  instagram?: string;
+  contactPreference?: string;
+  address?: string;
+  latitude?: number;
+  longitude?: number;
+}
+
 export interface CreatePetDTO {
   name: string;
   type: string;
@@ -82,10 +94,23 @@ export interface CreatePetDTO {
   location: string;
   userId: string;
 }
+
 export type CreatePostDTO = Omit<Post, 'id' | 'createdAt' | 'updatedAt' | 'pet' | 'user'>;
 
 // Tipos para atualização
-export type UpdateUserDTO = Partial<CreateUserDTO>;
+export interface UpdateUserDTO {
+  name?: string;
+  email?: string;
+  password?: string;
+  avatar?: string;
+  whatsapp?: string;
+  instagram?: string;
+  contactPreference?: string;
+  address?: string;
+  latitude?: number;
+  longitude?: number;
+}
+
 export interface UpdatePetDTO {
   name?: string;
   type?: string;
@@ -99,8 +124,23 @@ export interface UpdatePetDTO {
   vaccinated?: boolean;
   location?: string;
 }
+
 export type UpdatePostDTO = Partial<CreatePostDTO>;
 
 // Tipos para resposta (sem senha)
 export type UserResponse = Omit<User, 'password'>;
-export type PetResponse = Pet; 
+export type PetResponse = Pet;
+
+// Tipos para filtros
+export interface PostFilters {
+  type?: PostType;
+  status?: PostStatus;
+  location?: string;
+  petType?: string;
+  petGender?: PetGender;
+  petSize?: PetSize;
+  userId?: string;
+  search?: string;
+  page?: number;
+  limit?: number;
+} 
