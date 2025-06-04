@@ -82,3 +82,15 @@ Todas as rotas (exceto login e registro) requerem um token JWT no header `Author
 - `DELETE /api/posts/:id` - Deletar post
 - `GET /api/posts/user/:userId` - Buscar posts por usuário
 - `GET /api/posts/pet/:petId` - Buscar posts por pet
+## 📖 Uso
+
+1. Inicie o servidor com `npm run dev`.
+2. Acesse `http://localhost:3000` e utilize um cliente REST para testar as rotas.
+
+## 🤝 Contribuição
+
+Contribuições são bem-vindas! Abra uma issue ou envie um pull request.
+
+## 📄 Sobre
+
+Projeto criado para estudos e compartilhamento de adoção de animais.
