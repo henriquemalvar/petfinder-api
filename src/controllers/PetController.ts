@@ -20,7 +20,8 @@ export class PetController {
       const pet = await this.petService.create(petData);
       res.status(StatusCodes.CREATED).json(pet);
     } catch (error) {
-      res.status(500).json({ error: error instanceof Error ? error.message : error });
+      next(error);
+      return;
     }
   };
 
@@ -29,7 +30,8 @@ export class PetController {
       const pets = await this.petService.findAll();
       res.status(StatusCodes.OK).json(pets);
     } catch (error) {
-      res.status(500).json({ error: error instanceof Error ? error.message : error });
+      next(error);
+      return;
     }
   };
 
@@ -39,7 +41,8 @@ export class PetController {
       const pet = await this.petService.findById(id);
       res.status(StatusCodes.OK).json(pet);
     } catch (error) {
-      res.status(500).json({ error: error instanceof Error ? error.message : error });
+      next(error);
+      return;
     }
   };
 
@@ -50,7 +53,8 @@ export class PetController {
       const pet = await this.petService.update(id, petData);
       res.status(StatusCodes.OK).json(pet);
     } catch (error) {
-      res.status(500).json({ error: error instanceof Error ? error.message : error });
+      next(error);
+      return;
     }
   };
 
@@ -61,7 +65,8 @@ export class PetController {
       const pet = await this.petService.update(id, petData);
       res.status(StatusCodes.OK).json(pet);
     } catch (error) {
-      res.status(500).json({ error: error instanceof Error ? error.message : error });
+      next(error);
+      return;
     }
   };
 
@@ -71,7 +76,8 @@ export class PetController {
       await this.petService.delete(id);
       res.status(StatusCodes.NO_CONTENT).send();
     } catch (error) {
-      res.status(500).json({ error: error instanceof Error ? error.message : error });
+      next(error);
+      return;
     }
   };
 
@@ -88,6 +94,7 @@ export class PetController {
       res.status(StatusCodes.OK).json(pets);
     } catch (error) {
       next(error);
+      return;
     }
   };
-} 
+}
