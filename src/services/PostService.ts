@@ -35,7 +35,7 @@ export class PostService {
 
   async create(data: CreatePostDTO): Promise<Post> {
     const post = await this.repository.create(data);
-    await this.notificationService.notifyNearbyUsers(post);
+    await this.notificationService.notifyNearbyUsers(post.id);
     return post;
   }
 
@@ -47,7 +47,7 @@ export class PostService {
     }
 
     const updated = await this.repository.update(id, data);
-    await this.notificationService.notifyNearbyUsers(updated);
+    await this.notificationService.notifyNearbyUsers(updated.id);
     return updated;
   }
 
