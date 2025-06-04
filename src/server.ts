@@ -1,9 +1,10 @@
 import cors from 'cors';
 import dotenv from 'dotenv';
-import express, { ErrorRequestHandler, Request, Response } from 'express';
+import express, { Request, Response } from 'express';
 import morgan from 'morgan';
 import { swaggerDocs, swaggerSetup } from './config/swagger';
 import routes from './routes';
+import { errorHandler } from './middlewares/errorHandler';
 
 // Configuração das variáveis de ambiente
 dotenv.config();
@@ -27,11 +28,6 @@ app.get('/health', (req: Request, res: Response) => {
 app.use('/api', routes);
 
 // Tratamento de erros
-const errorHandler: ErrorRequestHandler = (err, req, res, next) => {
-  console.error(err.stack);
-  res.status(500).json({ error: 'Erro interno do servidor' });
-};
-
 app.use(errorHandler);
 
 export { app };
