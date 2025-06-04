@@ -3,6 +3,7 @@ import { StatusCodes } from 'http-status-codes';
 import { AppError } from '../errors/AppError';
 import { PostRepository } from '../repositories/PostRepository';
 import { CreatePostDTO, PostFilters, UpdatePostDTO } from '../types';
+import { prisma } from '../config/prisma';
 
 export class PostService {
   private repository: PostRepository;
@@ -10,7 +11,7 @@ export class PostService {
 
   constructor() {
     this.repository = new PostRepository();
-    this.prisma = new PrismaClient();
+    this.prisma = prisma;
   }
 
   async findAll(): Promise<Post[]> {

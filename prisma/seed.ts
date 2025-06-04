@@ -1,7 +1,6 @@
 import { PetGender, PetSize, PostStatus, PostType, PrismaClient } from '@prisma/client';
 import * as bcrypt from 'bcrypt';
-
-const prisma = new PrismaClient();
+import { prisma } from '../src/config/prisma';
 
 async function main() {
   // Limpar o banco de dados

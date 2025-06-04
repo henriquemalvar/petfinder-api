@@ -1,12 +1,13 @@
 import { Post, PrismaClient } from '@prisma/client';
 import { CreatePostDTO, PostFilters, UpdatePostDTO } from '../types';
 import { IRepository } from './interfaces/IRepository';
+import { prisma } from '../config/prisma';
 
 export class PostRepository implements IRepository<Post> {
   private prisma: PrismaClient;
 
   constructor() {
-    this.prisma = new PrismaClient();
+    this.prisma = prisma;
   }
 
   async findAll(): Promise<Post[]> {

@@ -3,8 +3,8 @@ import { NextFunction, Request, Response } from 'express';
 import { StatusCodes } from 'http-status-codes';
 import * as jwt from 'jsonwebtoken';
 import { UserResponse } from '../types';
+import { prisma } from '../config/prisma';
 
-const prisma = new PrismaClient();
 
 interface TokenPayload {
   id: string;
