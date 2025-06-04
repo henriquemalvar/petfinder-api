@@ -143,4 +143,15 @@ export interface PostFilters {
   search?: string;
   page?: number;
   limit?: number;
-} 
+}
+
+export type Notification = {
+  id: string;
+  userId: string;
+  postId: string;
+  message: string;
+  read: boolean;
+  createdAt: Date;
+  user?: User;
+  post?: Post;
+};
