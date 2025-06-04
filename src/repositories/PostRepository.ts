@@ -1,4 +1,5 @@
 import { Post, PrismaClient } from '@prisma/client';
+import { USER_SELECT } from '../constants/prismaSelect';
 import { CreatePostDTO, PostFilters, UpdatePostDTO } from '../types';
 import { IRepository } from './interfaces/IRepository';
 import { prisma } from '../config/prisma';
@@ -15,14 +16,7 @@ export class PostRepository implements IRepository<Post> {
       include: {
         pet: true,
         user: {
-          select: {
-            id: true,
-            name: true,
-            avatar: true,
-            whatsapp: true,
-            instagram: true,
-            contactPreference: true
-          }
+          select: USER_SELECT
         }
       }
     });
@@ -34,14 +28,7 @@ export class PostRepository implements IRepository<Post> {
       include: {
         pet: true,
         user: {
-          select: {
-            id: true,
-            name: true,
-            avatar: true,
-            whatsapp: true,
-            instagram: true,
-            contactPreference: true
-          }
+          select: USER_SELECT
         }
       }
     });
@@ -53,14 +40,7 @@ export class PostRepository implements IRepository<Post> {
       include: {
         pet: true,
         user: {
-          select: {
-            id: true,
-            name: true,
-            avatar: true,
-            whatsapp: true,
-            instagram: true,
-            contactPreference: true
-          }
+          select: USER_SELECT
         }
       }
     });
@@ -107,14 +87,7 @@ export class PostRepository implements IRepository<Post> {
         include: {
           pet: true,
           user: {
-            select: {
-              id: true,
-              name: true,
-              avatar: true,
-              whatsapp: true,
-              instagram: true,
-              contactPreference: true
-            }
+            select: USER_SELECT
           }
         }
       }),
@@ -137,14 +110,7 @@ export class PostRepository implements IRepository<Post> {
       include: {
         pet: true,
         user: {
-          select: {
-            id: true,
-            name: true,
-            avatar: true,
-            whatsapp: true,
-            instagram: true,
-            contactPreference: true
-          }
+          select: USER_SELECT
         }
       }
     });
@@ -162,14 +128,7 @@ export class PostRepository implements IRepository<Post> {
       include: {
         pet: true,
         user: {
-          select: {
-            id: true,
-            name: true,
-            avatar: true,
-            whatsapp: true,
-            instagram: true,
-            contactPreference: true
-          }
+          select: USER_SELECT
         }
       },
       orderBy: {
@@ -184,16 +143,9 @@ export class PostRepository implements IRepository<Post> {
       include: {
         pet: true,
         user: {
-          select: {
-            id: true,
-            name: true,
-            avatar: true,
-            whatsapp: true,
-            instagram: true,
-            contactPreference: true
-          }
+          select: USER_SELECT
         }
       }
     });
   }
-} 
+}

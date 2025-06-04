@@ -1,4 +1,5 @@
 import { PrismaClient } from '@prisma/client';
+import { USER_SELECT } from '../constants/prismaSelect';
 import { NextFunction, Request, Response } from 'express';
 import { StatusCodes } from 'http-status-codes';
 import * as jwt from 'jsonwebtoken';
@@ -31,17 +32,7 @@ export const authMiddleware = (
     
     prisma.user.findUnique({
       where: { id: data.id },
-      select: {
-        id: true,
-        name: true,
-        email: true,
-        avatar: true,
-        whatsapp: true,
-        instagram: true,
-        contactPreference: true,
-        createdAt: true,
-        updatedAt: true
-      }
+      select: USER_SELECT
     }).then(user => {
       if (!user) {
         res.status(StatusCodes.UNAUTHORIZED).json({ error: 'Usuário não encontrado' });

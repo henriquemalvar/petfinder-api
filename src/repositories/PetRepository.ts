@@ -1,5 +1,5 @@
 import { PrismaClient } from '@prisma/client';
-import { prisma } from '../config/prisma';
+import { USER_SELECT } from '../constants/prismaSelect';
 import { PetCreate, PetResponse } from '../types';
 import { IRepository } from './interfaces/IRepository';
 
@@ -14,17 +14,7 @@ export class PetRepository implements IRepository<PetResponse> {
     const pets = await this.prisma.pet.findMany({
       include: {
         user: {
-          select: {
-            id: true,
-            name: true,
-            email: true,
-            avatar: true,
-            whatsapp: true,
-            instagram: true,
-            contactPreference: true,
-            createdAt: true,
-            updatedAt: true
-          }
+          select: USER_SELECT
         }
       }
     });
@@ -36,17 +26,7 @@ export class PetRepository implements IRepository<PetResponse> {
       where: { id },
       include: {
         user: {
-          select: {
-            id: true,
-            name: true,
-            email: true,
-            avatar: true,
-            whatsapp: true,
-            instagram: true,
-            contactPreference: true,
-            createdAt: true,
-            updatedAt: true
-          }
+          select: USER_SELECT
         }
       }
     });
@@ -58,17 +38,7 @@ export class PetRepository implements IRepository<PetResponse> {
       data,
       include: {
         user: {
-          select: {
-            id: true,
-            name: true,
-            email: true,
-            avatar: true,
-            whatsapp: true,
-            instagram: true,
-            contactPreference: true,
-            createdAt: true,
-            updatedAt: true
-          }
+          select: USER_SELECT
         }
       }
     });
@@ -81,17 +51,7 @@ export class PetRepository implements IRepository<PetResponse> {
       data,
       include: {
         user: {
-          select: {
-            id: true,
-            name: true,
-            email: true,
-            avatar: true,
-            whatsapp: true,
-            instagram: true,
-            contactPreference: true,
-            createdAt: true,
-            updatedAt: true
-          }
+          select: USER_SELECT
         }
       }
     });
@@ -109,17 +69,7 @@ export class PetRepository implements IRepository<PetResponse> {
       where: { userId },
       include: {
         user: {
-          select: {
-            id: true,
-            name: true,
-            email: true,
-            avatar: true,
-            whatsapp: true,
-            instagram: true,
-            contactPreference: true,
-            createdAt: true,
-            updatedAt: true
-          }
+          select: USER_SELECT
         },
         posts: {
           orderBy: {
