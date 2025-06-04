@@ -40,6 +40,9 @@ Edite o arquivo `.env` com suas configurações do Supabase:
 - `DATABASE_URL`: URL de conexão do seu banco de dados Supabase
 - `JWT_SECRET`: Chave secreta para geração dos tokens JWT
 - `PORT`: Porta onde a API irá rodar (opcional, padrão: 3000)
+- `SUPABASE_URL`: URL do projeto Supabase
+- `SUPABASE_ANON_KEY`: Chave pública do Supabase
+- `SUPABASE_BUCKET`: Bucket de armazenamento para as imagens (opcional)
 
 4. Execute as migrações do banco de dados:
 ```bash
@@ -87,6 +90,10 @@ Todas as rotas (exceto login e registro) requerem um token JWT no header `Author
 
 - `POST /api/notifications/register` - Registrar token de push do dispositivo
 - `POST /api/notifications/nearby` - Enviar notificações para usuários próximos
+
+### Uploads
+
+- `POST /api/uploads` - Enviar uma imagem (campo `file` no form-data)
 
 ## 📖 Uso
 
