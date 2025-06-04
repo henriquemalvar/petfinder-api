@@ -1,31 +1,31 @@
-import { PrismaClient, NotificationToken } from '@prisma/client';
+import { NotificationToken } from '@prisma/client';
+import { prisma } from '../config/prisma';
 
 export class NotificationTokenRepository {
-  private prisma: PrismaClient;
 
   constructor() {
-    this.prisma = new PrismaClient();
+    // Using the shared Prisma instance
   }
 
   async upsert(token: string, userId: string): Promise<NotificationToken> {
-    const existing = await this.prisma.notificationToken.findUnique({
+    const existing = await prisma.notificationToken.findUnique({
       where: { token }
     });
 
     if (existing) {
-      return this.prisma.notificationToken.update({
+      return prisma.notificationToken.update({
         where: { token },
         data: { userId }
       });
     }
 
-    return this.prisma.notificationToken.create({
+    return prisma.notificationToken.create({
       data: { token, userId }
     });
   }
 
   async findByUserIds(userIds: string[]): Promise<NotificationToken[]> {
-    return this.prisma.notificationToken.findMany({
+    return prisma.notificationToken.findMany({
       where: { userId: { in: userIds } }
     });
   }
