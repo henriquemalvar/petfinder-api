@@ -24,6 +24,7 @@ model User {
   updatedAt DateTime @updatedAt
   pets      Pet[]
   posts     Post[]
+  tokens    NotificationToken[]
 }
 
 enum PetGender {
@@ -94,4 +95,13 @@ model Notification {
   message   String
   read      Boolean  @default(false)
   createdAt DateTime @default(now())
+}
+
+model NotificationToken {
+  id        String   @id @default(uuid())
+  token     String   @unique
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  userId    String
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
 }

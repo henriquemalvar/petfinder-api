@@ -1,38 +1,43 @@
-import { Post, PostType, PrismaClient, User } from '@prisma/client';
-import { NotificationRepository } from '../repositories/NotificationRepository';
-
-function deg2rad(deg: number): number {
-  return deg * (Math.PI / 180);
-}
-
-function haversineDistance(lat1: number, lon1: number, lat2: number, lon2: number): number {
-  const R = 6371; // km
-  const dLat = deg2rad(lat2 - lat1);
-  const dLon = deg2rad(lon2 - lon1);
-  const a =
-    Math.sin(dLat / 2) * Math.sin(dLat / 2) +
-    Math.cos(deg2rad(lat1)) * Math.cos(deg2rad(lat2)) *
-    Math.sin(dLon / 2) * Math.sin(dLon / 2);
-  const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
-  return R * c;
-}
+import { PrismaClient } from '@prisma/client';
+import fetch from 'node-fetch';
+import { NotificationTokenRepository } from '../repositories/NotificationTokenRepository';
 
 export class NotificationService {
   private prisma: PrismaClient;
-  private repository: NotificationRepository;
+  private tokenRepo: NotificationTokenRepository;
 
   constructor() {
     this.prisma = new PrismaClient();
-    this.repository = new NotificationRepository();
+    this.tokenRepo = new NotificationTokenRepository();
   }
 
-  async notifyNearbyUsers(post: Post): Promise<void> {
-    if (post.type !== PostType.LOST && post.type !== PostType.FOUND) {
-      return;
-    }
+  async registerToken(token: string, userId: string) {
+    await this.tokenRepo.upsert(token, userId);
+  }
 
-    const author = await this.prisma.user.findUnique({ where: { id: post.userId } });
-    if (!author || author.latitude == null || author.longitude == null) {
+  private getDistanceKm(lat1: number, lon1: number, lat2: number, lon2: number) {
+    const R = 6371; // km
+    const dLat = (lat2 - lat1) * (Math.PI / 180);
+    const dLon = (lon2 - lon1) * (Math.PI / 180);
+    const a =
+      Math.sin(dLat / 2) * Math.sin(dLat / 2) +
+      Math.cos(lat1 * (Math.PI / 180)) *
+        Math.cos(lat2 * (Math.PI / 180)) *
+        Math.sin(dLon / 2) *
+        Math.sin(dLon / 2);
+    const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
+    return R * c;
+  }
+
+  async notifyNearbyUsers(postId: string) {
+    const post = await this.prisma.post.findUnique({
+      where: { id: postId },
+      include: {
+        user: true
+      }
+    });
+
+    if (!post || post.user.latitude == null || post.user.longitude == null) {
       return;
     }
 
@@ -44,16 +49,27 @@ export class NotificationService {
       }
     });
 
-    for (const user of users) {
-      if (user.latitude == null || user.longitude == null) continue;
-      const distance = haversineDistance(author.latitude, author.longitude, user.latitude, user.longitude);
-      if (distance <= 10) {
-        await this.repository.create({
-          userId: user.id,
-          postId: post.id,
-          message: `Novo post de ${post.type === PostType.LOST ? 'pet perdido' : 'pet encontrado'} próximo a você`
-        });
-      }
-    }
+    const nearbyUserIds = users
+      .filter(u =>
+        this.getDistanceKm(
+          post.user.latitude!,
+          post.user.longitude!,
+          u.latitude!,
+          u.longitude!
+        ) <= 10
+      )
+      .map(u => u.id);
+
+    if (!nearbyUserIds.length) return;
+
+    const tokens = await this.tokenRepo.findByUserIds(nearbyUserIds);
+
+    const messages = tokens.map(t => ({ to: t.token, sound: 'default', body: 'Há um novo post perto de você!' }));
+
+    await fetch('https://exp.host/--/api/v2/push/send', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(messages)
+    });
   }
 }
