@@ -1,4 +1,5 @@
-import { Post, PrismaClient } from '@prisma/client';
+import { Post } from '@prisma/client';
+import { prisma } from '../config/prisma';
 import { StatusCodes } from 'http-status-codes';
 import { AppError } from '../errors/AppError';
 import { PostRepository } from '../repositories/PostRepository';
@@ -7,12 +8,10 @@ import { NotificationService } from './NotificationService';
 
 export class PostService {
   private repository: PostRepository;
-  private prisma: PrismaClient;
   private notificationService: NotificationService;
 
   constructor() {
     this.repository = new PostRepository();
-    this.prisma = new PrismaClient();
     this.notificationService = new NotificationService();
   }
 
@@ -64,7 +63,7 @@ export class PostService {
 
   async findByUserId(userId: string): Promise<Post[]> {
     // Verifica se o usuário existe
-    const user = await this.prisma.user.findUnique({
+    const user = await prisma.user.findUnique({
       where: { id: userId }
     });
 

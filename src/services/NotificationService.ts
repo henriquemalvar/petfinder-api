@@ -1,13 +1,11 @@
-import { PrismaClient } from '@prisma/client';
+import { prisma } from '../config/prisma';
 import fetch from 'node-fetch';
 import { NotificationTokenRepository } from '../repositories/NotificationTokenRepository';
 
 export class NotificationService {
-  private prisma: PrismaClient;
   private tokenRepo: NotificationTokenRepository;
 
   constructor() {
-    this.prisma = new PrismaClient();
     this.tokenRepo = new NotificationTokenRepository();
   }
 
@@ -30,7 +28,7 @@ export class NotificationService {
   }
 
   async notifyNearbyUsers(postId: string) {
-    const post = await this.prisma.post.findUnique({
+    const post = await prisma.post.findUnique({
       where: { id: postId },
       include: {
         user: true
@@ -41,7 +39,7 @@ export class NotificationService {
       return;
     }
 
-    const users = await this.prisma.user.findMany({
+    const users = await prisma.user.findMany({
       where: {
         id: { not: post.userId },
         latitude: { not: null },
