@@ -1,12 +1,13 @@
 import { PrismaClient, User } from '@prisma/client';
 import { CreateUserDTO, UpdateUserDTO } from '../types';
 import { IRepository } from './interfaces/IRepository';
+import { prisma } from '../config/prisma';
 
 export class UserRepository implements IRepository<User> {
   private prisma: PrismaClient;
 
   constructor() {
-    this.prisma = new PrismaClient();
+    this.prisma = prisma;
   }
 
   async create(data: CreateUserDTO): Promise<User> {

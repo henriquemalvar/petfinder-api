@@ -1,4 +1,5 @@
 import { PrismaClient } from '@prisma/client';
+import { prisma } from '../config/prisma';
 import { PetCreate, PetResponse } from '../types';
 import { IRepository } from './interfaces/IRepository';
 
@@ -6,7 +7,7 @@ export class PetRepository implements IRepository<PetResponse> {
   private prisma: PrismaClient;
 
   constructor() {
-    this.prisma = new PrismaClient();
+    this.prisma = prisma;
   }
 
   async findAll(): Promise<PetResponse[]> {

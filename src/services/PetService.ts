@@ -1,4 +1,5 @@
 import { PrismaClient } from '@prisma/client';
+import { prisma } from '../config/prisma';
 import { StatusCodes } from 'http-status-codes';
 import { AppError } from '../errors/AppError';
 import { PetRepository } from '../repositories/PetRepository';
@@ -10,7 +11,7 @@ export class PetService {
 
   constructor() {
     this.repository = new PetRepository();
-    this.prisma = new PrismaClient();
+    this.prisma = prisma;
   }
 
   async findAll(): Promise<PetResponse[]> {
