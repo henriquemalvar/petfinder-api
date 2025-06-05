@@ -1,11 +1,10 @@
 import { Router } from 'express';
-import multer from 'multer';
+import { upload } from '../config/cloudinary';
 import { UploadController } from '../controllers/UploadController';
 import { authMiddleware } from '../middlewares/auth';
 
 const router = Router();
 const uploadController = new UploadController();
-const upload = multer();
 
 /**
  * @swagger
