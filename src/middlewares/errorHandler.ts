@@ -10,31 +10,34 @@ export const errorHandler = (
   next: NextFunction
 ) => {
   if (error instanceof AppError) {
-    return res.status(error.statusCode).json({
+    res.status(error.statusCode).json({
       error: error.message,
       details: error.details
     });
+    return;
   }
 
   if (error instanceof Prisma.PrismaClientKnownRequestError) {
     if (error.code === 'P2002') {
-      return res.status(StatusCodes.CONFLICT).json({
+      res.status(StatusCodes.CONFLICT).json({
         status: 'error',
         message: 'Já existe um registro com este valor único'
       });
+      return;
     }
 
     if (error.code === 'P2025') {
-      return res.status(StatusCodes.NOT_FOUND).json({
+      res.status(StatusCodes.NOT_FOUND).json({
         status: 'error',
         message: 'Registro não encontrado'
       });
+      return;
     }
   }
 
   console.error(error);
 
-  return res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({
+  res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({
     error: 'Erro interno do servidor'
   });
 }; 
