@@ -1,4 +1,5 @@
 import { PrismaClient } from '@prisma/client';
+import { prisma } from '../config/prisma';
 import { USER_SELECT } from '../constants/prismaSelect';
 import { PetCreate, PetResponse } from '../types';
 import { IRepository } from './interfaces/IRepository';
