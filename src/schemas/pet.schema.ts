@@ -28,7 +28,9 @@ export const createPetSchema = z.object({
     description: z.string().min(10, 'Descrição deve ter no mínimo 10 caracteres'),
     castrated: z.boolean(),
     vaccinated: z.boolean(),
-    location: z.string().min(2, 'Localização deve ter no mínimo 2 caracteres')
+    location: z.string().min(2, 'Localização é obrigatória'),
+    latitude: z.number().min(-90).max(90).optional(),
+    longitude: z.number().min(-180).max(180).optional()
   })
 });
 

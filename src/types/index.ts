@@ -1,15 +1,4 @@
-import { PostStatus, PostType } from '@prisma/client';
-
-export enum PetGender {
-  MALE = 'MALE',
-  FEMALE = 'FEMALE'
-}
-
-export enum PetSize {
-  SMALL = 'SMALL',
-  MEDIUM = 'MEDIUM',
-  LARGE = 'LARGE'
-}
+import { PetGender, PetSize, PostStatus, PostType } from '@prisma/client';
 
 export type User = {
   id: string;
@@ -20,10 +9,15 @@ export type User = {
   whatsapp: string | null;
   instagram: string | null;
   contactPreference: string | null;
+  address: string | null;
+  latitude: number | null;
+  longitude: number | null;
   createdAt: Date;
   updatedAt: Date;
   pets?: Pet[];
   posts?: Post[];
+  tokens?: NotificationToken[];
+  notifications?: Notification[];
 };
 
 export type Pet = {
@@ -38,7 +32,8 @@ export type Pet = {
   description: string;
   castrated: boolean;
   vaccinated: boolean;
-  location: string;
+  latitude: number | null;
+  longitude: number | null;
   createdAt: Date;
   updatedAt: Date;
   userId: string;
@@ -58,12 +53,14 @@ export type Post = {
   petId: string;
   userId: string;
   type: PostType;
-  location: string;
   status: PostStatus;
+  latitude: number | null;
+  longitude: number | null;
   createdAt: Date;
   updatedAt: Date;
   pet?: Pet;
   user?: User;
+  notifications?: Notification[];
 };
 
 // Tipos para criação
@@ -91,11 +88,20 @@ export interface CreatePetDTO {
   description: string;
   castrated: boolean;
   vaccinated: boolean;
-  location: string;
+  latitude?: number;
+  longitude?: number;
   userId: string;
 }
 
-export type CreatePostDTO = Omit<Post, 'id' | 'createdAt' | 'updatedAt' | 'pet' | 'user'>;
+export interface CreatePostDTO {
+  title: string;
+  content: string;
+  petId: string;
+  userId: string;
+  type: PostType;
+  location: string;
+  status?: PostStatus;
+}
 
 // Tipos para atualização
 export interface UpdateUserDTO {
@@ -122,14 +128,24 @@ export interface UpdatePetDTO {
   description?: string;
   castrated?: boolean;
   vaccinated?: boolean;
-  location?: string;
+  latitude?: number;
+  longitude?: number;
 }
 
-export type UpdatePostDTO = Partial<CreatePostDTO>;
+export interface UpdatePostDTO {
+  title?: string;
+  content?: string;
+  type?: PostType;
+  location?: string;
+  status?: PostStatus;
+}
 
 // Tipos para resposta (sem senha)
 export type UserResponse = Omit<User, 'password'>;
-export type PetResponse = Pet;
+export type PetResponse = Omit<Pet, 'user' | 'posts'> & {
+  user: Pick<User, 'id' | 'name' | 'email' | 'avatar' | 'whatsapp' | 'instagram' | 'contactPreference' | 'createdAt' | 'updatedAt'>;
+  posts: Pick<Post, 'id' | 'createdAt' | 'updatedAt' | 'type' | 'status' | 'title' | 'content' | 'petId' | 'userId'>[];
+};
 
 // Tipos para filtros
 export interface PostFilters {
@@ -137,8 +153,8 @@ export interface PostFilters {
   status?: PostStatus;
   location?: string;
   petType?: string;
-  petGender?: PetGender;
-  petSize?: PetSize;
+  petGender?: string;
+  petSize?: string;
   userId?: string;
   search?: string;
   page?: number;
@@ -154,4 +170,13 @@ export type Notification = {
   createdAt: Date;
   user?: User;
   post?: Post;
+};
+
+export type NotificationToken = {
+  id: string;
+  token: string;
+  createdAt: Date;
+  updatedAt: Date;
+  userId: string;
+  user?: User;
 };

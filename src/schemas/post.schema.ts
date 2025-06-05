@@ -9,8 +9,7 @@ export const createPostSchema = z.object({
     content: z.string().min(10, 'Conteúdo deve ter no mínimo 10 caracteres'),
     petId: z.string().uuid('ID de pet inválido'),
     type: postTypeEnum,
-    location: z.string().min(2, 'Localização deve ter no mínimo 2 caracteres'),
-    status: postStatusEnum
+    status: postStatusEnum.optional().default('ACTIVE')
   })
 });
 

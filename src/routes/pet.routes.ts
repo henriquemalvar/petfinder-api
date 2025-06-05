@@ -28,6 +28,10 @@ const petController = new PetController();
  *               - breed
  *               - age
  *               - description
+ *               - gender
+ *               - size
+ *               - castrated
+ *               - vaccinated
  *             properties:
  *               name:
  *                 type: string
@@ -40,16 +44,39 @@ const petController = new PetController();
  *                 type: string
  *                 example: "Labrador"
  *               age:
- *                 type: number
- *                 example: 2
+ *                 type: string
+ *                 example: "2"
+ *               gender:
+ *                 type: string
+ *                 enum: [MALE, FEMALE]
+ *                 example: "MALE"
+ *               size:
+ *                 type: string
+ *                 enum: [SMALL, MEDIUM, LARGE]
+ *                 example: "MEDIUM"
+ *               image:
+ *                 type: string
+ *                 format: uri
+ *                 example: "https://exemplo.com/foto.jpg"
  *               description:
  *                 type: string
  *                 example: "Cachorro muito dócil e brincalhão"
- *               photos:
- *                 type: array
- *                 items:
- *                   type: string
- *                 example: ["https://exemplo.com/foto1.jpg"]
+ *               castrated:
+ *                 type: boolean
+ *                 example: true
+ *               vaccinated:
+ *                 type: boolean
+ *                 example: true
+ *               latitude:
+ *                 type: number
+ *                 minimum: -90
+ *                 maximum: 90
+ *                 example: -23.550520
+ *               longitude:
+ *                 type: number
+ *                 minimum: -180
+ *                 maximum: 180
+ *                 example: -46.633308
  *     responses:
  *       201:
  *         description: Pet criado com sucesso

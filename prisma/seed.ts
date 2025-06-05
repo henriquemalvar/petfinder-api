@@ -1,9 +1,11 @@
-import { PetGender, PetSize, PostStatus, PostType, PrismaClient } from '@prisma/client';
+import { PetGender, PetSize, PostStatus, PostType } from '@prisma/client';
 import * as bcrypt from 'bcrypt';
 import { prisma } from '../src/config/prisma';
 
 async function main() {
   // Limpar o banco de dados
+  await prisma.notification.deleteMany();
+  await prisma.notificationToken.deleteMany();
   await prisma.post.deleteMany();
   await prisma.pet.deleteMany();
   await prisma.user.deleteMany();
@@ -329,16 +331,67 @@ async function main() {
 
   // Criar posts
   const posts = await Promise.all(
-    pets.map((pet) =>
-      prisma.post.create({
+    pets.map((pet, index) => {
+      // Distribuir os tipos de post
+      let postType;
+      if (index % 3 === 0) {
+        postType = PostType.ADOPTION;
+      } else if (index % 3 === 1) {
+        postType = PostType.LOST;
+      } else {
+        postType = PostType.FOUND;
+      }
+
+      // Criar títulos e conteúdos específicos para cada tipo
+      let title, content;
+      switch (postType) {
+        case PostType.ADOPTION:
+          title = `${pet.name} para adoção`;
+          content = `${pet.description}. Procura um lar amoroso e responsável.`;
+          break;
+        case PostType.LOST:
+          title = `${pet.name} desapareceu`;
+          content = `${pet.name} desapareceu na região de ${pet.location}. ${pet.description}. Por favor, entre em contato se tiver informações.`;
+          break;
+        case PostType.FOUND:
+          title = `Encontrei um ${pet.type.toLowerCase()}`;
+          content = `Encontrei um ${pet.type.toLowerCase()} ${pet.breed.toLowerCase()} na região de ${pet.location}. ${pet.description}. Por favor, entre em contato se for seu pet.`;
+          break;
+      }
+
+      return prisma.post.create({
         data: {
-          title: `${pet.name} para adoção`,
-          content: `${pet.description}. Procura um lar amoroso.`,
-          type: PostType.ADOPTION,
-          location: pet.location,
+          title,
+          content,
+          type: postType,
           status: PostStatus.ACTIVE,
           petId: pet.id,
           userId: pet.userId,
+        },
+      });
+    })
+  );
+
+  // Criar tokens de notificação para cada usuário
+  const notificationTokens = await Promise.all(
+    users.map((user) =>
+      prisma.notificationToken.create({
+        data: {
+          token: `expo-token-${user.id}`,
+          userId: user.id,
+        },
+      })
+    )
+  );
+
+  // Criar algumas notificações de exemplo
+  const notifications = await Promise.all(
+    posts.slice(0, 5).map((post) =>
+      prisma.notification.create({
+        data: {
+          message: `Novo interesse em ${post.title}`,
+          userId: post.userId,
+          postId: post.id,
         },
       })
     )
@@ -348,6 +401,8 @@ async function main() {
   console.log(`Criados ${users.length} usuários`);
   console.log(`Criados ${pets.length} pets`);
   console.log(`Criados ${posts.length} posts`);
+  console.log(`Criados ${notificationTokens.length} tokens de notificação`);
+  console.log(`Criados ${notifications.length} notificações`);
 }
 
 main()

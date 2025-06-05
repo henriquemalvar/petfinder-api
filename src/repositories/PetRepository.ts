@@ -16,10 +16,15 @@ export class PetRepository implements IRepository<PetResponse> {
       include: {
         user: {
           select: USER_SELECT
+        },
+        posts: {
+          orderBy: {
+            createdAt: 'desc'
+          }
         }
       }
     });
-    return pets as PetResponse[];
+    return pets;
   }
 
   async findById(id: string): Promise<PetResponse | null> {
@@ -28,10 +33,15 @@ export class PetRepository implements IRepository<PetResponse> {
       include: {
         user: {
           select: USER_SELECT
+        },
+        posts: {
+          orderBy: {
+            createdAt: 'desc'
+          }
         }
       }
     });
-    return pet as PetResponse | null;
+    return pet;
   }
 
   async create(data: PetCreate): Promise<PetResponse> {
@@ -40,10 +50,15 @@ export class PetRepository implements IRepository<PetResponse> {
       include: {
         user: {
           select: USER_SELECT
+        },
+        posts: {
+          orderBy: {
+            createdAt: 'desc'
+          }
         }
       }
     });
-    return pet as PetResponse;
+    return pet;
   }
 
   async update(id: string, data: Partial<PetCreate>): Promise<PetResponse> {
@@ -53,10 +68,15 @@ export class PetRepository implements IRepository<PetResponse> {
       include: {
         user: {
           select: USER_SELECT
+        },
+        posts: {
+          orderBy: {
+            createdAt: 'desc'
+          }
         }
       }
     });
-    return pet as PetResponse;
+    return pet;
   }
 
   async delete(id: string): Promise<void> {
@@ -82,6 +102,6 @@ export class PetRepository implements IRepository<PetResponse> {
         createdAt: 'desc'
       }
     });
-    return pets as PetResponse[];
+    return pets;
   }
 } 
