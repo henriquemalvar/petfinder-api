@@ -8,13 +8,14 @@ API para gerenciamento de pets e adoção de animais.
 - Express
 - TypeScript
 - Prisma
-- PostgreSQL (Supabase)
+- PostgreSQL
+- Cloudinary para armazenamento de imagens
 - JWT para autenticação
 
 ## 📋 Pré-requisitos
 
 - Node.js (versão 18 ou superior)
-- Conta no Supabase
+- Conta no Cloudinary
 - npm ou yarn
 
 ## 🔧 Instalação
@@ -36,13 +37,13 @@ yarn install
 ```bash
 cp .env.example .env
 ```
-Edite o arquivo `.env` com suas configurações do Supabase:
-- `DATABASE_URL`: URL de conexão do seu banco de dados Supabase
+Edite o arquivo `.env` com suas configurações:
+- `DATABASE_URL`: URL de conexão do seu banco de dados PostgreSQL
 - `JWT_SECRET`: Chave secreta para geração dos tokens JWT
 - `PORT`: Porta onde a API irá rodar (opcional, padrão: 3000)
-- `SUPABASE_URL`: URL do projeto Supabase
-- `SUPABASE_ANON_KEY`: Chave pública do Supabase
-- `SUPABASE_BUCKET`: Bucket de armazenamento para as imagens (opcional)
+- `CLOUDINARY_CLOUD_NAME`: Nome da sua conta no Cloudinary
+- `CLOUDINARY_API_KEY`: Chave de API do Cloudinary
+- `CLOUDINARY_API_SECRET`: Chave secreta do Cloudinary
 
 4. Execute as migrações do banco de dados:
 ```bash
@@ -94,6 +95,8 @@ Todas as rotas (exceto login e registro) requerem um token JWT no header `Author
 ### Uploads
 
 - `POST /api/uploads` - Enviar uma imagem (campo `file` no form-data)
+  - Formatos aceitos: jpg, jpeg, png, gif
+  - Tamanho máximo: 1000x1000 pixels
 
 ## 📖 Uso
 

@@ -9,22 +9,23 @@ datasource db {
 }
 
 model User {
-  id        String   @id @default(uuid())
-  name      String
-  email     String   @unique
-  password  String
-  avatar    String?  // opcional
-  whatsapp  String?
-  instagram String?
+  id                String              @id @default(uuid())
+  name              String
+  email             String              @unique
+  password          String
+  avatar            String? // opcional
+  whatsapp          String?
+  instagram         String?
   contactPreference String?
-  address   String?  // endereço completo
-  latitude  Float?   // latitude
-  longitude Float?   // longitude
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
-  pets      Pet[]
-  posts     Post[]
-  tokens    NotificationToken[]
+  address           String? // endereço completo
+  latitude          Float? // latitude
+  longitude         Float? // longitude
+  createdAt         DateTime            @default(now())
+  updatedAt         DateTime            @updatedAt
+  pets              Pet[]
+  posts             Post[]
+  tokens            NotificationToken[]
+  notifications     Notification[]
 }
 
 enum PetGender {
@@ -39,7 +40,7 @@ enum PetSize {
 }
 
 model Pet {
-  id          String   @id @default(uuid())
+  id          String    @id @default(uuid())
   name        String
   type        String
   breed       String
@@ -51,9 +52,9 @@ model Pet {
   castrated   Boolean
   vaccinated  Boolean
   location    String
-  createdAt   DateTime @default(now())
-  updatedAt   DateTime @updatedAt
-  user        User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @updatedAt
+  user        User      @relation(fields: [userId], references: [id], onDelete: Cascade)
   userId      String
   posts       Post[]
 }
@@ -71,18 +72,18 @@ enum PostStatus {
 }
 
 model Post {
-  id        String     @id @default(uuid())
-  title     String
-  content   String
-  pet       Pet        @relation(fields: [petId], references: [id], onDelete: Cascade)
-  petId     String
-  user      User       @relation(fields: [userId], references: [id], onDelete: Cascade)
-  userId    String
-  type      PostType
-  location  String
-  status    PostStatus
-  createdAt DateTime   @default(now())
-  updatedAt DateTime   @updatedAt
+  id            String         @id @default(uuid())
+  title         String
+  content       String
+  pet           Pet            @relation(fields: [petId], references: [id], onDelete: Cascade)
+  petId         String
+  user          User           @relation(fields: [userId], references: [id], onDelete: Cascade)
+  userId        String
+  type          PostType
+  location      String
+  status        PostStatus
+  createdAt     DateTime       @default(now())
+  updatedAt     DateTime       @updatedAt
   notifications Notification[]
 }
 
